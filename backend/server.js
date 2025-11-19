@@ -1,35 +1,27 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import { supabase } from "../db.js";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { supabase } = require("../db.js"); // ← mismo directorio
 
 dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Tus rutas aquí...
 app.get("/api/dishes", async (req, res) => {
-    try {
-      const { data, error } = await supabase.from("dishes").select("*");
-      if (error) throw error;
-      res.json(data);
-    } catch (err) {
-      console.error("🔥 Error en GET /api/dishes:", err.message);
-      res.status(500).json({ error: err.message });
-    }
-  });
-  
-  // POST: crear plato
-  app.post("/api/dishes", async (req, res) => {
-    const { name, price } = req.body;
-    const { data, error } = await supabase
-      .from("dishes")
-      .insert([{ name, price }])
-      .select();
-    if (error) return res.status(500).json({ error: error.message });
-    res.status(201).json(data[0]);
-  });
-  
-  const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => console.log(`✅ Servidor en https://restaurantfs.onrender.com/${PORT}`));
-  
+  try {
+    const { data, error } = await supabase.from("dishes").select("*");
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    console.error("🔥 Error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`✅ Servidor en http://localhost:${PORT}`);
+});
