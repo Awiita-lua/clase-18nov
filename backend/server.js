@@ -1,7 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const { supabase } = require("../db.js"); // ← mismo directorio
+// backend/server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { supabase } from "../db.js";
 
 dotenv.config();
 
@@ -9,7 +10,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Tus rutas aquí...
 app.get("/api/dishes", async (req, res) => {
   try {
     const { data, error } = await supabase.from("dishes").select("*");
@@ -23,5 +23,5 @@ app.get("/api/dishes", async (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor en http://localhost:${PORT}`);
+  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
 });
